@@ -1,0 +1,6 @@
+__pycache__
+*.bmp
+*.tsv
+*.png
+service_account.json
+config.json

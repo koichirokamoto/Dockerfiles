@@ -1,0 +1,19 @@
+FROM ubuntu:18.10
+
+ENV TESSDATA_PREFIX=/tessdata
+
+RUN apt-get update && \
+  apt-get install -y  \
+  tesseract-ocr git python3.7 python3-pip \
+  libsm6 libxext6
+
+ADD requirements.txt /tmp
+ADD ocr/* /ocr/
+
+RUN pip3 install -r /tmp/requirements.txt
+
+RUN git clone https://github.com/tesseract-ocr/tessdata_best.git $TESSDATA_PREFIX
+
+WORKDIR /ocr
+
+CMD ["python3", "server.py"]

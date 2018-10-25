@@ -1,0 +1,32 @@
+<body>
+  <input type="file" id="file">
+</body>
+
+<script>
+  const body = document.body;
+  const file = document.getElementById('file');
+  file.addEventListener('change', (ev) => {
+    let content = file.files[0];
+    let formData = new FormData();
+    formData.append('content', content);
+    fetch('/', {
+      body: formData,
+      method: 'post',
+      mode: 'cors',
+    }).then(res => {
+      if (res.status >= 400) {
+        throw new Error('error!');
+      }
+      return res.json()
+    }).then(json => {
+      if (!json) {
+        return;
+      }
+      const link = document.createElement('a');
+      link.href = json['url'];
+      link.innerText = 'ここからOCR後の画像が見られます';
+      link.id = new Date().getDate().toString();
+      body.appendChild(link);
+    })
+  });
+</script>
